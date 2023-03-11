@@ -15,9 +15,6 @@ public class Item {
         return itemName;
     }
 
-    public void setItemName(String itemName) {
-        this.itemName = itemName;
-    }
 
     public Type getType() {
         return type;
@@ -36,10 +33,10 @@ public class Item {
         if ((itemName.length() == 3)) {
             Type typeCash = Type.Cash;
             return new Item(itemName, quantity, typeCash);
-        } else if (itemName.toLowerCase().endsWith("gem")) {
+        } else if (itemName.toLowerCase().endsWith("gem")&& itemName.length()>=4) {
             Type typeGem = Type.Gem;
             return new Item(itemName, quantity, typeGem);
-        } else if (itemName.toLowerCase().equals("gold")) {
+        } else if (itemName.equalsIgnoreCase("gold")) {
             Type typeGold = Type.Gold;
             return new Item(itemName, quantity, typeGold);
         }

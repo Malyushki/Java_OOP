@@ -8,8 +8,9 @@ public class Main {
 
         Scanner scanner = new Scanner(System.in);
         long capacity = Long.parseLong(scanner.nextLine());
-        String[] itemArr = scanner.nextLine().split("\\s+");
         Bag bag = new Bag(capacity);
+
+        String[] itemArr = scanner.nextLine().split("\\s+");
 
         for (int i = 0; i < itemArr.length; i += 2) {
             String itemName = itemArr[i];
@@ -37,6 +38,8 @@ public class Main {
             }
         }
         System.out.println(bag);
+
+       // bag.printContent();
 
     }
 }

@@ -1,8 +1,6 @@
 package greedyTimes;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class Bag {
@@ -74,7 +72,8 @@ public class Bag {
             List<Item> items = bagList.stream()
                     .filter(item -> item.getType().equals(type))
                     .sorted(Comparator.comparing(Item::getItemName).reversed()
-                            .thenComparing(Item::getQuantity))
+                            .thenComparing(Item::getQuantity)
+                            .thenComparing(item -> item.getType().toString()))
                     .collect(Collectors.toList());
 
             // Calculate the total amount of items of the current type
@@ -91,8 +90,10 @@ public class Bag {
             }
         }
 
-        return sb.toString().trim();
+        return sb.toString();
     }
+
+
 
     // Helper method to calculate the total amount of items of a given type
     private long getTotalAmount(Type type) {
@@ -117,4 +118,41 @@ public class Bag {
             this.bagList.add(item);
         }
     }
+
+    private void printByGroupItem(Type type) {
+        Map<String, Long> valueByName = new TreeMap<>();
+        bagList.stream().filter(e -> e.getType().equals(type))
+                .forEach(e -> {
+                            String name = e.getItemName();
+                            valueByName.putIfAbsent(name, 0L);
+                            valueByName.put(name, valueByName.get(name) + e.getQuantity());
+                        }
+                );
+        Map<String, Long> sortedByAmount = new TreeMap<>(Collections.reverseOrder());
+        valueByName.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue())
+                .forEach(e -> sortedByAmount.put(e.getKey(), e.getValue()));
+
+        sortedByAmount.forEach((key, value) -> System.out.printf("##%s - %s%n", key, value));
+    }
+
+    public void printContent() {
+        if (getGoldSum() > 0) {
+            System.out.printf("<Gold> $%s%n", getGoldSum());
+            printByGroupItem(Type.Gold);
+        }
+        if (getGemSum() > 0) {
+            System.out.printf("<Gem> $%s%n", getGemSum());
+            printByGroupItem(Type.Gem);
+        }
+        if (getCashSum() > 0) {
+            System.out.printf("<Cash> $%s%n", getCashSum());
+            printByGroupItem(Type.Cash);
+        }
+
+    }
+
+
+
+
 }
